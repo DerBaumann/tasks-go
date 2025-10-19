@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
+	"strconv"
+	"tasks/commands"
 	"tasks/config"
 )
 
@@ -14,28 +15,34 @@ func main() {
 
 	switch os.Args[1] {
 	case "list":
-		fmt.Println("Listing Tasks")
+		commands.ListTasks()
 	case "add":
 		if len(os.Args) < 3 {
 			log.Fatal(config.HelpMessage)
 		}
-		task := os.Args[2]
+		description := os.Args[2]
 
-		fmt.Printf("Adding task: %s\n", task)
+		commands.AddTask(description)
 	case "complete":
 		if len(os.Args) < 3 {
 			log.Fatal(config.HelpMessage)
 		}
-		taskid := os.Args[2]
+		taskid, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			log.Fatal(err)
+		}
 
-		fmt.Printf("completing task: %s\n", taskid)
+		commands.CompleteTask(taskid)
 	case "delete":
 		if len(os.Args) < 3 {
 			log.Fatal(config.HelpMessage)
 		}
-		taskid := os.Args[2]
+		taskid, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			log.Fatal(err)
+		}
 
-		fmt.Printf("Deleting task: %s\n", taskid)
+		commands.DeleteTask(taskid)
 	default:
 		log.Fatal(config.HelpMessage)
 	}

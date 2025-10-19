@@ -1,8 +1,11 @@
 package config
 
 var HelpMessage = `
-Usage:
-list
-add <description>
-complete <taskid>
-delete <taskid>`
+	A todo list for the terminal
+
+	Usage:
+		tasks [command]
+
+	Avalilable Commands:
+		add\tAdd 
+`

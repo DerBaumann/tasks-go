@@ -1,0 +1,21 @@
+ID,Description,Created,Done
+1,Write project proposal,2025-10-01T09:30:00Z,false
+2,Review pull requests,2025-10-02T14:15:00Z,true
+3,Refactor authentication module,2025-10-03T10:05:00Z,false
+4,Prepare presentation slides,2025-10-04T16:20:00Z,true
+5,Update documentation,2025-10-05T12:00:00Z,false
+6,Fix bugs from issue tracker,2025-10-06T08:45:00Z,false
+7,Run end-to-end tests,2025-10-07T18:10:00Z,true
+8,Deploy staging environment,2025-10-08T11:30:00Z,false
+9,Conduct user feedback session,2025-10-09T15:00:00Z,true
+10,Plan next sprint backlog,2025-10-10T09:00:00Z,false
+11,Optimize database queries,2025-10-11T13:45:00Z,false
+12,Review design mockups,2025-10-12T10:20:00Z,true
+13,Update CI/CD pipeline,2025-10-13T08:10:00Z,false
+14,Research new caching strategy,2025-10-14T17:50:00Z,false
+15,Fix security vulnerabilities,2025-10-15T19:25:00Z,true
+16,Write API integration tests,2025-10-16T09:40:00Z,false
+17,Refine UI animations,2025-10-17T14:30:00Z,false
+18,Organize team retrospective,2025-10-18T16:00:00Z,true
+19,Archive completed tasks,2025-10-19T07:55:00Z,true
+20,Set up error monitoring alerts,2025-10-19T10:25:00Z,false
