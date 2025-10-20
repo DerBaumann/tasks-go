@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
 	"strconv"
@@ -15,7 +16,16 @@ func main() {
 
 	switch os.Args[1] {
 	case "list":
-		commands.ListTasks()
+		listCmd := flag.NewFlagSet("list", flag.ExitOnError)
+		showAll := listCmd.Bool("a", false, "Shows all tasks including completed ones")
+
+		if err := listCmd.Parse(os.Args[2:]); err != nil {
+			log.Fatal(err)
+		}
+
+		if err := commands.ListTasks(*showAll); err != nil {
+			log.Fatal(err)
+		}
 	case "add":
 		if len(os.Args) < 3 {
 			log.Fatal(config.HelpMessage)

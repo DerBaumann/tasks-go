@@ -1,4 +1,3 @@
-ID,Description,Created,Done
 1,Write project proposal,2025-10-01T09:30:00Z,false
 2,Review pull requests,2025-10-02T14:15:00Z,true
 3,Refactor authentication module,2025-10-03T10:05:00Z,false

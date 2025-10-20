@@ -1,6 +1,8 @@
 package config
 
-var HelpMessage = `
+const TasksFile = "./tasks.csv"
+
+const HelpMessage = `
 	A todo list for the terminal
 
 	Usage:
