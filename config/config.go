@@ -9,5 +9,5 @@ const HelpMessage = `
 		tasks [command]
 
 	Avalilable Commands:
-		add\tAdd 
+	TODO
 `

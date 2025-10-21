@@ -32,7 +32,9 @@ func main() {
 		}
 		description := os.Args[2]
 
-		commands.AddTask(description)
+		if err := commands.AddTask(description); err != nil {
+			log.Fatal(err)
+		}
 	case "complete":
 		if len(os.Args) < 3 {
 			log.Fatal(config.HelpMessage)
@@ -42,7 +44,9 @@ func main() {
 			log.Fatal(err)
 		}
 
-		commands.CompleteTask(taskid)
+		if err := commands.CompleteTask(taskid); err != nil {
+			log.Fatal(err)
+		}
 	case "delete":
 		if len(os.Args) < 3 {
 			log.Fatal(config.HelpMessage)
@@ -52,7 +56,9 @@ func main() {
 			log.Fatal(err)
 		}
 
-		commands.DeleteTask(taskid)
+		if err := commands.DeleteTask(taskid); err != nil {
+			log.Fatal(err)
+		}
 	default:
 		log.Fatal(config.HelpMessage)
 	}

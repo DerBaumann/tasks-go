@@ -1,10 +1,12 @@
 package commands
 
 import (
+	"cmp"
 	"encoding/csv"
+	"errors"
 	"fmt"
-	"log"
 	"os"
+	"slices"
 	"strconv"
 	"tasks/config"
 	"tasks/models"
@@ -13,40 +15,9 @@ import (
 )
 
 func ListTasks(showAll bool) error {
-	file, err := os.Open(config.TasksFile)
+	tasks, err := models.ReadTasksFromStore()
 	if err != nil {
 		return err
-	}
-	defer file.Close()
-
-	reader := csv.NewReader(file)
-	reader.FieldsPerRecord = 4
-	data, err := reader.ReadAll()
-	if err != nil {
-		return err
-	}
-
-	var tasks []models.Task
-
-	for _, row := range data {
-		id, err := strconv.Atoi(row[0])
-		if err != nil {
-			return err
-		}
-
-		description := row[1]
-
-		created, err := time.Parse(time.RFC3339, row[2])
-		if err != nil {
-			return err
-		}
-
-		done, err := strconv.ParseBool(row[3])
-		if err != nil {
-			return err
-		}
-
-		tasks = append(tasks, models.Task{ID: id, Description: description, Created: created, Done: done})
 	}
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', 0)
@@ -72,14 +43,46 @@ func ListTasks(showAll bool) error {
 	return nil
 }
 
-func AddTask(description string) {
-	log.Fatal("Not implemented!")
+func AddTask(description string) error {
+	tasks, err := models.ReadTasksFromStore()
+	if err != nil {
+		return err
+	}
+
+	lastTask := slices.MaxFunc(tasks, func(a, b models.Task) int {
+		return cmp.Compare(a.ID, b.ID)
+	})
+
+	lastId := lastTask.ID
+
+	task := models.Task{ID: lastId + 1, Description: description, Created: time.Now(), Done: false}
+
+	file, err := os.OpenFile(config.TasksFile, os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
+
+	id := strconv.Itoa(task.ID)
+	created := task.Created.Format(time.RFC3339)
+	done := strconv.FormatBool(task.Done)
+
+	record := []string{id, description, created, done}
+
+	writer.Write(record)
+
+	fmt.Println("Successfully added Task!")
+
+	return nil
 }
 
-func CompleteTask(id int) {
-	log.Fatal("Not implemented!")
+func CompleteTask(id int) error {
+	return errors.New("not implemented")
 }
 
-func DeleteTask(id int) {
-	log.Fatal("Not implemented!")
+func DeleteTask(id int) error {
+	return errors.New("not implemented")
 }
