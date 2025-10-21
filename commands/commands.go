@@ -10,12 +10,13 @@ import (
 	"strconv"
 	"tasks/config"
 	"tasks/models"
+	"tasks/utils"
 	"text/tabwriter"
 	"time"
 )
 
 func ListTasks(showAll bool) error {
-	tasks, err := models.ReadTasksFromStore()
+	tasks, err := utils.ReadCSV()
 	if err != nil {
 		return err
 	}
@@ -44,7 +45,7 @@ func ListTasks(showAll bool) error {
 }
 
 func AddTask(description string) error {
-	tasks, err := models.ReadTasksFromStore()
+	tasks, err := utils.ReadCSV()
 	if err != nil {
 		return err
 	}
