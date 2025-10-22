@@ -95,5 +95,28 @@ func CompleteTask(id int) error {
 }
 
 func DeleteTask(id int) error {
-	return errors.New("not implemented")
+	tasks, err := utils.ReadCSV()
+	if err != nil {
+		return err
+	}
+
+	var filtered []models.Task
+	for i := range tasks {
+		if tasks[i].ID != id {
+			filtered = append(filtered, tasks[i])
+		}
+	}
+
+	if len(tasks) == len(filtered) {
+		msg := fmt.Sprintf("task with ID %d doesnt exist", id)
+		return errors.New(msg)
+	}
+
+	if err := utils.WriteCSV(filtered); err != nil {
+		return err
+	}
+
+	fmt.Printf("Task: %d has been deleted!\n", id)
+
+	return nil
 }
