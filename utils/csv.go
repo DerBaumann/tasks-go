@@ -2,7 +2,6 @@ package utils
 
 import (
 	"encoding/csv"
-	"errors"
 	"os"
 	"strconv"
 	"tasks/config"
@@ -51,5 +50,29 @@ func ReadCSV() ([]models.Task, error) {
 }
 
 func WriteCSV(tasks []models.Task) error {
-	return errors.New("not implemented")
+	file, err := os.OpenFile(config.TasksFile, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	var csvData [][]string
+	for _, task := range tasks {
+		id := strconv.Itoa(task.ID)
+		created := task.Created.Format(time.RFC3339)
+		done := strconv.FormatBool(task.Done)
+
+		row := []string{id, task.Description, created, done}
+
+		csvData = append(csvData, row)
+	}
+
+	writer := csv.NewWriter(file)
+	writer.WriteAll(csvData)
+
+	if err := writer.Error(); err != nil {
+		return err
+	}
+
+	return nil
 }

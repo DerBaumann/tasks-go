@@ -2,13 +2,10 @@ package commands
 
 import (
 	"cmp"
-	"encoding/csv"
 	"errors"
 	"fmt"
 	"os"
 	"slices"
-	"strconv"
-	"tasks/config"
 	"tasks/models"
 	"tasks/utils"
 	"text/tabwriter"
@@ -58,22 +55,11 @@ func AddTask(description string) error {
 
 	task := models.Task{ID: lastId + 1, Description: description, Created: time.Now(), Done: false}
 
-	file, err := os.OpenFile(config.TasksFile, os.O_APPEND|os.O_WRONLY, 0644)
-	if err != nil {
+	tasks = append(tasks, task)
+
+	if err := utils.WriteCSV(tasks); err != nil {
 		return err
 	}
-	defer file.Close()
-
-	writer := csv.NewWriter(file)
-	defer writer.Flush()
-
-	id := strconv.Itoa(task.ID)
-	created := task.Created.Format(time.RFC3339)
-	done := strconv.FormatBool(task.Done)
-
-	record := []string{id, description, created, done}
-
-	writer.Write(record)
 
 	fmt.Println("Successfully added Task!")
 
