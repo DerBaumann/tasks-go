@@ -31,7 +31,7 @@ func ListTasks(showAll bool) error {
 			doneStr = "no"
 		}
 
-		if showAll || task.Done {
+		if showAll || !task.Done {
 			fmt.Fprintf(w, "%d\t%s\t%s\t%s\n", task.ID, task.Description, timeStr, doneStr)
 		}
 	}
@@ -67,7 +67,31 @@ func AddTask(description string) error {
 }
 
 func CompleteTask(id int) error {
-	return errors.New("not implemented")
+	tasks, err := utils.ReadCSV()
+	if err != nil {
+		return err
+	}
+
+	taskFound := false
+	for i := range tasks {
+		if tasks[i].ID == id {
+			tasks[i].Done = true
+			taskFound = true
+		}
+	}
+
+	if !taskFound {
+		msg := fmt.Sprintf("task with ID %d doesnt exist", id)
+		return errors.New(msg)
+	}
+
+	if err := utils.WriteCSV(tasks); err != nil {
+		return err
+	}
+
+	fmt.Printf("Task: %d has been completed!\n", id)
+
+	return nil
 }
 
 func DeleteTask(id int) error {
